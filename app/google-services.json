@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "70845159924",
+    "firebase_url": "https://ringcontrol-30e4c.firebaseio.com",
+    "project_id": "ringcontrol-30e4c",
+    "storage_bucket": "ringcontrol-30e4c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:70845159924:android:55d59ce9da77f7a6",
+        "android_client_info": {
+          "package_name": "com.fjbatresv.callrest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "70845159924-0bqm8lh02dculngfhhs2j3rup5acnfdq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAj-dR0Nc52kDQs6Mwc85VY9rnb5U2AO8Y"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
