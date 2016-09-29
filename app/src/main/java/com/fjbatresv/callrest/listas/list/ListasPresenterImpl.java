@@ -1,8 +1,8 @@
-package com.fjbatresv.callrest.listas;
+package com.fjbatresv.callrest.listas.list;
 
 import com.fjbatresv.callrest.libs.base.EventBus;
-import com.fjbatresv.callrest.listas.events.ListasEvent;
-import com.fjbatresv.callrest.listas.ui.ListasView;
+import com.fjbatresv.callrest.listas.list.events.ListasEvent;
+import com.fjbatresv.callrest.listas.list.ui.ListasView;
 
 import org.greenrobot.eventbus.Subscribe;
 

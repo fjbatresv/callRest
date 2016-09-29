@@ -1,4 +1,4 @@
-package com.fjbatresv.callrest.listas.ui.adapters;
+package com.fjbatresv.callrest.listas.list.ui.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;

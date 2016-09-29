@@ -1,6 +1,6 @@
-package com.fjbatresv.callrest.listas;
+package com.fjbatresv.callrest.listas.list;
 
-import com.fjbatresv.callrest.listas.events.ListasEvent;
+import com.fjbatresv.callrest.listas.list.events.ListasEvent;
 
 /**
  * Created by javie on 27/09/2016.

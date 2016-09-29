@@ -1,4 +1,4 @@
-package com.fjbatresv.callrest.listas.ui;
+package com.fjbatresv.callrest.listas.list.ui;
 
 import com.fjbatresv.callrest.entities.Lista;
 

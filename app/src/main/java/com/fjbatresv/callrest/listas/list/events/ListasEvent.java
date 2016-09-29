@@ -1,4 +1,4 @@
-package com.fjbatresv.callrest.listas.events;
+package com.fjbatresv.callrest.listas.list.events;
 
 import com.fjbatresv.callrest.entities.Lista;
 

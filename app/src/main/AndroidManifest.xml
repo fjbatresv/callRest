@@ -27,11 +27,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".listas.ui.ListasActivity" />
+        <activity android:name=".listas.list.ui.ListasActivity" />
         <activity
             android:name=".Test"
             android:label="@string/title_activity_test"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".listas.add.ui.ListaAddActivity" />
+        <activity android:name=".listas.view.ui.ListaViewActivity"></activity>
     </application>
 
 </manifest>

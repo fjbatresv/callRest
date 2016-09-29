@@ -1,15 +1,15 @@
-package com.fjbatresv.callrest.listas.DI;
+package com.fjbatresv.callrest.listas.list.DI;
 
 import com.fjbatresv.callrest.entities.Lista;
 import com.fjbatresv.callrest.libs.base.EventBus;
-import com.fjbatresv.callrest.listas.ListaInteractor;
-import com.fjbatresv.callrest.listas.ListaInteractorImpl;
-import com.fjbatresv.callrest.listas.ListasPresenter;
-import com.fjbatresv.callrest.listas.ListasPresenterImpl;
-import com.fjbatresv.callrest.listas.ListasRepo;
-import com.fjbatresv.callrest.listas.ListasRepoImpl;
-import com.fjbatresv.callrest.listas.ui.ListasView;
-import com.fjbatresv.callrest.listas.ui.adapters.ListasAdapter;
+import com.fjbatresv.callrest.listas.list.ListaInteractor;
+import com.fjbatresv.callrest.listas.list.ListaInteractorImpl;
+import com.fjbatresv.callrest.listas.list.ListasPresenter;
+import com.fjbatresv.callrest.listas.list.ListasPresenterImpl;
+import com.fjbatresv.callrest.listas.list.ListasRepo;
+import com.fjbatresv.callrest.listas.list.ListasRepoImpl;
+import com.fjbatresv.callrest.listas.list.ui.ListasView;
+import com.fjbatresv.callrest.listas.list.ui.adapters.ListasAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -9,4 +9,21 @@
     <string name="sidebar.listas">Mis listas</string>
     <string name="sidebar.login">Iniciar sesión</string>
     <string name="title_activity_test">TESTActivity</string>
+    <string name="listas.add.hint.nombre">Nombre</string>
+    <string name="listas.add.title">Nueva lista</string>
+    <string name="listas.add.hint.descripcion">Descripción</string>
+    <string name="listas.add.label.tipo">Tipo</string>
+    <string name="general.menu.action.save">Guardar</string>
+    <string name="listas_add_error_nombre">El campo nombre es obligatorio</string>
+    <string name="listas_add_error_repetido">No se puede repetir nombre de lista</string>
+    <string name="listas_add_message_add_success">Se creo la lista %s</string>
+    <string name="listas.view.title">Contactos</string>
+    <string name="general.menu.action.edit">Editar</string>
+    <string name="listas_view_error_nombre">No se encontro una lista con nombre %s</string>
+
+    <string-array name="listas_add_tipo">
+        <item>Nunca respondo</item>
+        <item>Siempre respondo</item>
+        <item>Simple</item>
+    </string-array>
 </resources>

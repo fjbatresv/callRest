@@ -3,10 +3,18 @@ package com.fjbatresv.callrest;
 import android.app.Application;
 
 import com.fjbatresv.callrest.libs.DI.LibsModule;
-import com.fjbatresv.callrest.listas.DI.DaggerListasComponent;
-import com.fjbatresv.callrest.listas.DI.ListasComponent;
-import com.fjbatresv.callrest.listas.DI.ListasModule;
-import com.fjbatresv.callrest.listas.ui.ListasView;
+import com.fjbatresv.callrest.listas.add.DI.DaggerListaAddComponent;
+import com.fjbatresv.callrest.listas.add.DI.ListaAddComponent;
+import com.fjbatresv.callrest.listas.add.DI.ListaAddModule;
+import com.fjbatresv.callrest.listas.add.ui.ListaAddView;
+import com.fjbatresv.callrest.listas.list.DI.DaggerListasComponent;
+import com.fjbatresv.callrest.listas.list.DI.ListasComponent;
+import com.fjbatresv.callrest.listas.list.DI.ListasModule;
+import com.fjbatresv.callrest.listas.list.ui.ListasView;
+import com.fjbatresv.callrest.listas.view.DI.DaggerListaViewComponent;
+import com.fjbatresv.callrest.listas.view.DI.ListaViewComponent;
+import com.fjbatresv.callrest.listas.view.DI.ListaViewModule;
+import com.fjbatresv.callrest.listas.view.ui.ListaViewView;
 import com.raizlabs.android.dbflow.config.FlowManager;
 
 /**
@@ -48,6 +56,22 @@ public class App extends Application {
                 .appModule(appModule)
                 .libsModule(libsModule)
                 .listasModule(new ListasModule(view))
+                .build();
+    }
+
+    public ListaAddComponent listaAdd(ListaAddView view){
+        return DaggerListaAddComponent.builder()
+                .appModule(appModule)
+                .libsModule(libsModule)
+                .listaAddModule(new ListaAddModule(view))
+                .build();
+    }
+
+    public ListaViewComponent listaView(ListaViewView view){
+        return DaggerListaViewComponent.builder()
+                .appModule(appModule)
+                .libsModule(libsModule)
+                .listaViewModule(new ListaViewModule(view))
                 .build();
     }
     //INJECTION -- END

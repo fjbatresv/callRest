@@ -1,5 +1,7 @@
-package com.fjbatresv.callrest.listas.ui;
+package com.fjbatresv.callrest.listas.list.ui;
 
+import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -7,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,8 +20,9 @@ import android.widget.Toast;
 import com.fjbatresv.callrest.App;
 import com.fjbatresv.callrest.R;
 import com.fjbatresv.callrest.entities.Lista;
-import com.fjbatresv.callrest.listas.ListasPresenter;
-import com.fjbatresv.callrest.listas.ui.adapters.ListasAdapter;
+import com.fjbatresv.callrest.listas.add.ui.ListaAddActivity;
+import com.fjbatresv.callrest.listas.list.ListasPresenter;
+import com.fjbatresv.callrest.listas.list.ui.adapters.ListasAdapter;
 
 import java.util.List;
 
@@ -26,9 +30,12 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class ListasActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener, ListasView {
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
     @Bind(R.id.drawer_layout)
     DrawerLayout drawer;
     @Bind(R.id.nav_view)
@@ -39,6 +46,8 @@ public class ListasActivity extends AppCompatActivity implements
     RecyclerView recyclerView;
     @Bind(R.id.container)
     RelativeLayout container;
+    @Bind(R.id.addList)
+    FloatingActionButton addList;
 
     @Inject
     ListasPresenter presenter;
@@ -55,6 +64,7 @@ public class ListasActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listas);
         ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
         navigationView.setNavigationItemSelectedListener(this);
         app = (App) getApplication();
         load();
@@ -82,6 +92,11 @@ public class ListasActivity extends AppCompatActivity implements
 
     private void inject() {
         app.listas(this).inject(this);
+    }
+
+    @OnClick(R.id.addList)
+    public void addList(){
+        startActivity(new Intent(this, ListaAddActivity.class));
     }
 
     @Override

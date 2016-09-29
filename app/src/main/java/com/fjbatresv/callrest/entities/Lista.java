@@ -19,15 +19,17 @@ public class Lista extends BaseModel implements Serializable {
     private String nombre;
     @Column
     private String descripcion;
+    @Column
+    private String tipo;
     private List<Contacto> contactos;
 
     public Lista() {
     }
 
-    public Lista(String nombre, String descripcion, List<Contacto> contactos) {
+    public Lista(String nombre, String descripcion, String tipo) {
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.contactos = contactos;
+        this.tipo = tipo;
     }
 
     public String getNombre() {
@@ -44,6 +46,14 @@ public class Lista extends BaseModel implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     public List<Contacto> getContactos() {

@@ -3,6 +3,7 @@ package com.fjbatresv.callrest.utils;
 import com.fjbatresv.callrest.entities.Contacto;
 import com.fjbatresv.callrest.entities.Contacto_Table;
 import com.fjbatresv.callrest.entities.Lista;
+import com.fjbatresv.callrest.entities.Lista_Table;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.ArrayList;
@@ -22,5 +23,14 @@ public class Queries {
             lista.setContactos(contactos);
         }
         return listas;
+    }
+
+    public static Lista listaHijosNombre(String nombre){
+        Lista lista = null;
+        lista = SQLite.select().from(Lista.class)
+                .where(Lista_Table.nombre.eq(nombre)).querySingle();
+        lista.setContactos(SQLite.select().from(Contacto.class)
+        .where(Contacto_Table.nombreLista.eq(nombre)).queryList());
+        return lista;
     }
 }

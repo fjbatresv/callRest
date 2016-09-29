@@ -1,8 +1,8 @@
-package com.fjbatresv.callrest.listas.DI;
+package com.fjbatresv.callrest.listas.list.DI;
 
 import com.fjbatresv.callrest.AppModule;
 import com.fjbatresv.callrest.libs.DI.LibsModule;
-import com.fjbatresv.callrest.listas.ui.ListasActivity;
+import com.fjbatresv.callrest.listas.list.ui.ListasActivity;
 
 import javax.inject.Singleton;
 
