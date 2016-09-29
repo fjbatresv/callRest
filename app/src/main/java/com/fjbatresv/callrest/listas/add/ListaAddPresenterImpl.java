@@ -42,13 +42,22 @@ public class ListaAddPresenterImpl implements ListaAddPresenter {
                 case ListaAddEvent.ADD_LIST:
                     view.listaDone(event.getLista());
                     break;
+                case ListaAddEvent.LOAD_LIST:
+                    view.loadList(event.getLista());
+                    break;
             }
         }
     }
 
     @Override
-    public void saveLista(Lista lista) {
+    public void saveLista(Lista lista, boolean nuevo) {
         view.loading(true);
-        interactor.saveList(lista);
+        interactor.saveList(lista, nuevo);
+    }
+
+    @Override
+    public void loadLista(String nombre) {
+        view.loading(true);
+        interactor.loadList(nombre);
     }
 }

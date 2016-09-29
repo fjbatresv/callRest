@@ -22,11 +22,20 @@ public class ListaAddInteractorImpl implements ListaAddInteractor {
     }
 
     @Override
-    public void saveList(Lista lista) {
+    public void saveList(Lista lista, boolean nuevo) {
         if (lista.getNombre() == null || lista.getNombre().isEmpty()){
             bus.post(new ListaAddEvent(ListaAddEvent.ADD_LIST, context.getString(R.string.listas_add_error_nombre)));
             return;
         }
-        repo.saveLista(lista);
+        repo.saveLista(lista, nuevo);
+    }
+
+    @Override
+    public void loadList(String nombre) {
+        if (nombre == null || nombre.isEmpty()){
+            bus.post(new ListaAddEvent(ListaAddEvent.LOAD_LIST, context.getString(R.string.listas_add_error_not_defined)));
+            return;
+        }
+        repo.loadList(nombre);
     }
 }

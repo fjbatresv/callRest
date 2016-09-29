@@ -2,9 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/menu_edit"
-        android:title="@string/general.menu.action.edit"
+        android:id="@+id/menu_edit_list"
+        android:title="@string/listas.view.menu.action.edit"
         android:icon="@android:drawable/ic_menu_edit"
-        android:orderInCategory="100"
-        app:showAsAction="always" />
+        android:orderInCategory="100" />
+    <item
+        android:id="@+id/menu_add_contact_phone"
+        android:title="@string/listas.view.menu.action.add.contact.phone"
+        android:icon="@android:drawable/ic_menu_my_calendar"
+        android:orderInCategory="100" />
+    <item
+        android:id="@+id/menu_add_contact"
+        android:title="@string/listas.view.menu.action.add.contact"
+        android:icon="@android:drawable/ic_input_add"
+        android:orderInCategory="100" />
 </menu>

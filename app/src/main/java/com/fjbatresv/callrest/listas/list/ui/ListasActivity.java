@@ -23,6 +23,9 @@ import com.fjbatresv.callrest.entities.Lista;
 import com.fjbatresv.callrest.listas.add.ui.ListaAddActivity;
 import com.fjbatresv.callrest.listas.list.ListasPresenter;
 import com.fjbatresv.callrest.listas.list.ui.adapters.ListasAdapter;
+import com.fjbatresv.callrest.listas.list.ui.adapters.OnItemClickListener;
+import com.fjbatresv.callrest.listas.view.ui.ListaViewActivity;
+import com.fjbatresv.callrest.listas.view.ui.ListaViewView;
 
 import java.util.List;
 
@@ -33,7 +36,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class ListasActivity extends AppCompatActivity implements
-        NavigationView.OnNavigationItemSelectedListener, ListasView {
+        NavigationView.OnNavigationItemSelectedListener, ListasView, OnItemClickListener{
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.drawer_layout)
@@ -91,7 +94,7 @@ public class ListasActivity extends AppCompatActivity implements
     }
 
     private void inject() {
-        app.listas(this).inject(this);
+        app.listas(this, this).inject(this);
     }
 
     @OnClick(R.id.addList)
@@ -138,5 +141,11 @@ public class ListasActivity extends AppCompatActivity implements
     @Override
     public void setListas(List<Lista> listas) {
         adapter.setListas(listas);
+    }
+
+    @Override
+    public void onListaCardClick(Lista lista) {
+        startActivity(new Intent(this, ListaViewActivity.class)
+        .putExtra(ListaViewActivity.LISTA, lista.getNombre()));
     }
 }

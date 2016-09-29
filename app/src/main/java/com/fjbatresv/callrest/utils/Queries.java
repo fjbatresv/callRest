@@ -33,4 +33,10 @@ public class Queries {
         .where(Contacto_Table.nombreLista.eq(nombre)).queryList());
         return lista;
     }
+
+    public static Lista listaNombre(String nombre) {
+        Lista lista = SQLite.select().from(Lista.class)
+                .where(Lista_Table.nombre.eq(nombre)).querySingle();
+        return lista;
+    }
 }

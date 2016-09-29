@@ -11,6 +11,7 @@ import com.fjbatresv.callrest.listas.list.DI.DaggerListasComponent;
 import com.fjbatresv.callrest.listas.list.DI.ListasComponent;
 import com.fjbatresv.callrest.listas.list.DI.ListasModule;
 import com.fjbatresv.callrest.listas.list.ui.ListasView;
+import com.fjbatresv.callrest.listas.list.ui.adapters.OnItemClickListener;
 import com.fjbatresv.callrest.listas.view.DI.DaggerListaViewComponent;
 import com.fjbatresv.callrest.listas.view.DI.ListaViewComponent;
 import com.fjbatresv.callrest.listas.view.DI.ListaViewModule;
@@ -51,11 +52,11 @@ public class App extends Application {
     }
 
     //INJECTION -- START
-    public ListasComponent listas(ListasView view){
+    public ListasComponent listas(ListasView view, OnItemClickListener listener){
         return DaggerListasComponent.builder()
                 .appModule(appModule)
                 .libsModule(libsModule)
-                .listasModule(new ListasModule(view))
+                .listasModule(new ListasModule(view, listener))
                 .build();
     }
 

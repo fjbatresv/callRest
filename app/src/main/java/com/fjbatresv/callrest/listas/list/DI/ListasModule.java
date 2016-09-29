@@ -10,6 +10,7 @@ import com.fjbatresv.callrest.listas.list.ListasRepo;
 import com.fjbatresv.callrest.listas.list.ListasRepoImpl;
 import com.fjbatresv.callrest.listas.list.ui.ListasView;
 import com.fjbatresv.callrest.listas.list.ui.adapters.ListasAdapter;
+import com.fjbatresv.callrest.listas.list.ui.adapters.OnItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,15 +26,23 @@ import dagger.Provides;
 @Module
 public class ListasModule {
     private ListasView view;
+    private OnItemClickListener listener;
 
-    public ListasModule(ListasView view) {
+    public ListasModule(ListasView view, OnItemClickListener listener) {
         this.view = view;
+        this.listener  = listener;
     }
 
     @Singleton
     @Provides
     ListasView providesListasView(){
         return this.view;
+    }
+
+    @Singleton
+    @Provides
+    OnItemClickListener providesOnItemClickListener(){
+        return this.listener;
     }
 
     @Singleton
@@ -57,7 +66,7 @@ public class ListasModule {
     @Singleton
     @Provides
     ListasAdapter providesListasAdapter(List<Lista> listas){
-        return new ListasAdapter(listas);
+        return new ListasAdapter(listas, listener);
     }
 
     @Singleton

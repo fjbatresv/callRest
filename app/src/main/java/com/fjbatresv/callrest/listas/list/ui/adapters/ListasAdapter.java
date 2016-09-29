@@ -1,5 +1,6 @@
 package com.fjbatresv.callrest.listas.list.ui.adapters;
 
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,9 +20,11 @@ import butterknife.ButterKnife;
  */
 public class ListasAdapter extends RecyclerView.Adapter<ListasAdapter.ViewHolder> {
     private List<Lista> listas;
+    private OnItemClickListener listener;
 
-    public ListasAdapter(List<Lista> listas) {
+    public ListasAdapter(List<Lista> listas, OnItemClickListener listener) {
         this.listas = listas;
+        this.listener = listener;
     }
 
     @Override
@@ -35,16 +38,11 @@ public class ListasAdapter extends RecyclerView.Adapter<ListasAdapter.ViewHolder
         Lista lista = listas.get(position);
         holder.listaNombre.setText(lista.getNombre());
         holder.listaDesc.setText(lista.getDescripcion());
+        holder.setOnItemClickListener(lista, listener);
     }
 
     public void setListas(List<Lista> listas){
         this.listas = listas;
-        if (listas.size() == 0){
-            this.listas.add(new Lista("Test", "Testing the test", null));
-            this.listas.add(new Lista("Test2", "Testing the test", null));
-            this.listas.add(new Lista("Test3", "Testing the test", null));
-            this.listas.add(new Lista("Test4", "Testing the test", null));
-        }
         notifyDataSetChanged();
     }
 
@@ -58,10 +56,21 @@ public class ListasAdapter extends RecyclerView.Adapter<ListasAdapter.ViewHolder
         TextView listaNombre;
         @Bind(R.id.listaDesc)
         TextView listaDesc;
+        @Bind(R.id.listaCard)
+        CardView listaCard;
 
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+
+        public void setOnItemClickListener(final Lista lista, final OnItemClickListener listener){
+            listaCard.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    listener.onListaCardClick(lista);
+                }
+            });
         }
     }
 }

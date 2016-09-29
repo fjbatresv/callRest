@@ -16,6 +16,8 @@ import java.util.List;
 public class Lista extends BaseModel implements Serializable {
     @PrimaryKey
     @Column
+    private String id;
+    @Column
     private String nombre;
     @Column
     private String descripcion;
@@ -26,10 +28,19 @@ public class Lista extends BaseModel implements Serializable {
     public Lista() {
     }
 
-    public Lista(String nombre, String descripcion, String tipo) {
+    public Lista(String id, String nombre, String descripcion, String tipo) {
+        this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.tipo = tipo;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getNombre() {

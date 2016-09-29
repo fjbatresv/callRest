@@ -11,5 +11,7 @@ public interface ListaAddPresenter {
     void onDestroy();
     void onEventMainThread(ListaAddEvent event);
 
-    void saveLista(Lista lista);
+    void saveLista(Lista lista, boolean nuevo);
+
+    void loadLista(String stringExtra);
 }

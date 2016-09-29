@@ -9,4 +9,5 @@ public interface ListaAddView {
     void loading(boolean load);
     void showError(String error);
     void listaDone(Lista lista);
+    void loadList(Lista lista);
 }

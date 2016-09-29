@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fjbatresv.callrest.App;
@@ -38,6 +39,8 @@ public class ListaAddActivity extends AppCompatActivity implements
     EditText desc;
     @Bind(R.id.tipo)
     Spinner tipo;
+    @Bind(R.id.listaAddTitle)
+    TextView listaAddTitle;
     @Bind(R.id.drawer_layout)
     DrawerLayout drawerLayout;
     @Bind(R.id.nav_view)
@@ -51,6 +54,7 @@ public class ListaAddActivity extends AppCompatActivity implements
     private App app;
     private int visible;
     private int gone;
+    private Lista lista;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,9 +86,11 @@ public class ListaAddActivity extends AppCompatActivity implements
         switch (item.getItemId()){
             case R.id.menu_save:
                 presenter.saveLista(new Lista(
+                                lista == null ? null : lista.getId(),
                         nombre.getText().toString(),
                         desc.getText().toString(),
-                        tipo.getSelectedItem().toString()));
+                        tipo.getSelectedItem().toString()),
+                        getIntent().hasExtra(LISTA) ? false : true);
                 break;
         }
         return true;
@@ -98,6 +104,10 @@ public class ListaAddActivity extends AppCompatActivity implements
         tipo.setAdapter(tiposAdapter);
         visible = View.VISIBLE;
         gone = View.GONE;
+        if (getIntent().hasExtra(LISTA)){
+            listaAddTitle.setText(getString(R.string.listas_edit_title));
+            presenter.loadLista(getIntent().getStringExtra(LISTA));
+        }
     }
 
     private void inject() {
@@ -145,10 +155,22 @@ public class ListaAddActivity extends AppCompatActivity implements
 
     @Override
     public void listaDone(Lista lista) {
-        Snackbar.make(drawerLayout,
-                String.format(getString(R.string.listas_add_message_add_success), lista.getNombre()),
-                Snackbar.LENGTH_LONG).show();
         startActivity(new Intent(this, ListaViewActivity.class)
         .putExtra(ListaViewActivity.LISTA, lista.getNombre()));
+    }
+
+    @Override
+    public void loadList(Lista lista) {
+        this.lista = lista;
+        nombre.setText(lista.getNombre());
+        desc.setText(lista.getDescripcion());
+        int contador = 0;
+        for (String tipoStr : getResources().getStringArray(R.array.listas_add_tipo)){
+            if (tipoStr.equalsIgnoreCase(lista.getTipo())){
+                tipo.setSelection(contador);
+                break;
+            }
+        }
+
     }
 }

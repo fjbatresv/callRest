@@ -1,5 +1,6 @@
 package com.fjbatresv.callrest.listas.view.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -28,11 +29,16 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.github.yavski.fabspeeddial.FabSpeedDial;
+import io.github.yavski.fabspeeddial.SimpleMenuListenerAdapter;
 
 public class ListaViewActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener, ListaViewView {
     @Bind(R.id.toolbar)
     Toolbar toolbar;
+
+    @Bind(R.id.addContact)
+    FabSpeedDial addContact;
 
     @Bind(R.id.drawer_layout)
     DrawerLayout drawerLayout;
@@ -57,6 +63,7 @@ public class ListaViewActivity extends AppCompatActivity implements
     private App app;
     private int visible;
     private int gone;
+    private Context context;
 
     private Lista lista;
 
@@ -81,29 +88,38 @@ public class ListaViewActivity extends AppCompatActivity implements
         super.onDestroy();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.listas_view_appbar, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.menu_edit:
-                startActivity(new Intent(this, ListaAddActivity.class)
-                        .putExtra(ListaAddActivity.LISTA, lista.getNombre()));
-                break;
-        }
-        return true;
-    }
-
     private void load() {
         visible = View.VISIBLE;
         gone = View.GONE;
+        context = getApplicationContext();
         recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
         recyclerView.setAdapter(adapter);
         presenter.loadList(getIntent().getStringExtra(LISTA));
+        addContact.setMenuListener(new SimpleMenuListenerAdapter() {
+            @Override
+            public boolean onMenuItemSelected(MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.menu_edit_list:
+                        startActivity(new Intent(context, ListaAddActivity.class).putExtra(ListaAddActivity.LISTA, lista.getNombre()));
+                        break;
+                    case R.id.menu_add_contact:
+                        addContact();
+                        break;
+                    case R.id.menu_add_contact_phone:
+                        addContactPhone();
+                        break;
+                }
+                return false;
+            }
+        });
+    }
+
+    private void addContactPhone() {
+
+    }
+
+    private void addContact() {
+        
     }
 
     private void inject() {

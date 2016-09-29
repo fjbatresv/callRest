@@ -6,6 +6,7 @@ import com.fjbatresv.callrest.entities.Lista;
  * Created by javie on 29/09/2016.
  */
 public class ListaAddEvent {
+    public static final int LOAD_LIST = 1;
     private int tipo;
     private String error;
     private Lista lista;
