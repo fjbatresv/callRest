@@ -1,5 +1,7 @@
 package com.fjbatresv.callrest.listas.view;
 
+import com.fjbatresv.callrest.entities.Contacto;
+import com.fjbatresv.callrest.entities.Lista;
 import com.fjbatresv.callrest.libs.base.EventBus;
 import com.fjbatresv.callrest.listas.view.events.ListaViewEvent;
 import com.fjbatresv.callrest.listas.view.ui.ListaViewView;
@@ -41,6 +43,12 @@ public class ListaViewPresenterImpl implements ListaViewPresenter {
                 case ListaViewEvent.LOAD_LIST:
                     view.foundedList(event.getLista());
                     break;
+                case ListaViewEvent.ADD_CONTACT:
+                    view.contacAdded(event.getLista());
+                    break;
+                case ListaViewEvent.REMOVE_CONTACT:
+                    view.contacAdded(event.getLista());
+                    break;
             }
         }
     }
@@ -49,5 +57,17 @@ public class ListaViewPresenterImpl implements ListaViewPresenter {
     public void loadList(String nombre) {
         view.loading(true);
         interactor.loadList(nombre);
+    }
+
+    @Override
+    public void addContact(Lista lista, Contacto contacto) {
+        view.loading(true);
+        interactor.addContact(lista, contacto);
+    }
+
+    @Override
+    public void removeContact(Lista lista, Contacto contacto) {
+        view.loading(true);
+        interactor.removeContact(lista, contacto);
     }
 }

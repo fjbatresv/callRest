@@ -7,6 +7,7 @@ import com.fjbatresv.callrest.entities.Lista;
  * Created by javie on 29/09/2016.
  */
 public class ListaViewEvent {
+    public static final int REMOVE_CONTACT = 2;
     private int tipo;
     private String error;
     private Contacto contacto;

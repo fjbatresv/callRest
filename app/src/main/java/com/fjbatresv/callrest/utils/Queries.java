@@ -29,8 +29,7 @@ public class Queries {
         Lista lista = null;
         lista = SQLite.select().from(Lista.class)
                 .where(Lista_Table.nombre.eq(nombre)).querySingle();
-        lista.setContactos(SQLite.select().from(Contacto.class)
-        .where(Contacto_Table.nombreLista.eq(nombre)).queryList());
+        lista.setContactos(getContactos(nombre));
         return lista;
     }
 
@@ -38,5 +37,11 @@ public class Queries {
         Lista lista = SQLite.select().from(Lista.class)
                 .where(Lista_Table.nombre.eq(nombre)).querySingle();
         return lista;
+    }
+
+    public static List<Contacto> getContactos(String lista) {
+        List<Contacto> contactos = SQLite.select().from(Contacto.class)
+                .where(Contacto_Table.nombreLista.eq(lista)).queryList();
+        return contactos;
     }
 }

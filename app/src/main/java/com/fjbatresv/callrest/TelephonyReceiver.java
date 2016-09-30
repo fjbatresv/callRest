@@ -8,14 +8,23 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import com.fjbatresv.callrest.entities.Contacto;
+import com.fjbatresv.callrest.entities.Contacto_Table;
+import com.fjbatresv.callrest.entities.Lista;
+import com.fjbatresv.callrest.entities.Lista_Table;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
+
 import java.lang.reflect.Method;
+import java.util.List;
 
 /**
  * Created by javie on 25/09/2016.
  */
 public class TelephonyReceiver extends BroadcastReceiver {
+    private Context context;
     @Override
     public void onReceive(Context context, Intent intent) {
+        this.context = context;
         TelephonyManager tm = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
         tm.listen(new PhoneListener(tm), PhoneStateListener.LISTEN_CALL_STATE);
     }
@@ -40,6 +49,15 @@ public class TelephonyReceiver extends BroadcastReceiver {
                 case TelephonyManager.CALL_STATE_RINGING:
                     String incoming = incomingNumber;
                     Log.e("sonando", "Llamada de: " + incoming);
+                    List<Contacto> contactos = SQLite.select().from(Contacto.class)
+                            .where(Contacto_Table.numero.eq(incoming)).queryList();
+                    for (Contacto contacto : contactos) {
+                        Lista lista = SQLite.select().from(Lista.class)
+                                .where(Lista_Table.nombre.eq(contacto.getNombreLista())).querySingle();
+                        if (lista.getTipo().equalsIgnoreCase(context.getResources().getStringArray(R.array.listas_add_tipo)[0])){
+                            endCall();
+                        }
+                    }
                     //endCall();
                     break;
             }

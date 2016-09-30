@@ -3,6 +3,8 @@ package com.fjbatresv.callrest.listas.view;
 import android.content.Context;
 
 import com.fjbatresv.callrest.R;
+import com.fjbatresv.callrest.entities.Contacto;
+import com.fjbatresv.callrest.entities.Lista;
 import com.fjbatresv.callrest.libs.base.EventBus;
 import com.fjbatresv.callrest.listas.view.events.ListaViewEvent;
 
@@ -30,5 +32,15 @@ public class ListaViewInteractorImpl implements ListaViewInteractor {
         }else{
             repo.loadList(nombre);
         }
+    }
+
+    @Override
+    public void addContact(Lista lista, Contacto contacto) {
+        repo.addContact(lista, contacto);
+    }
+
+    @Override
+    public void removeContact(Lista lista, Contacto contacto) {
+        repo.removeContact(lista, contacto);
     }
 }

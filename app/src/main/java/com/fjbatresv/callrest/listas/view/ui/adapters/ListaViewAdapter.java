@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fjbatresv.callrest.R;
@@ -19,9 +20,11 @@ import butterknife.ButterKnife;
  */
 public class ListaViewAdapter extends RecyclerView.Adapter<ListaViewAdapter.ViewHolder> {
     private List<Contacto> contactos;
+    private ListaViewOnItemClickListener listener;
 
-    public ListaViewAdapter(List<Contacto> contactos) {
+    public ListaViewAdapter(List<Contacto> contactos, ListaViewOnItemClickListener listener) {
         this.contactos = contactos;
+        this.listener = listener;
     }
 
     @Override
@@ -41,6 +44,7 @@ public class ListaViewAdapter extends RecyclerView.Adapter<ListaViewAdapter.View
         holder.nombre.setText(contacto.getNombre());
         holder.numero.setText(contacto.getNumero());
         holder.id.setText(contacto.getId());
+        holder.setOnItemClickListener(contacto, listener);
     }
 
     public void setList(List<Contacto> contactos){
@@ -53,6 +57,11 @@ public class ListaViewAdapter extends RecyclerView.Adapter<ListaViewAdapter.View
         notifyDataSetChanged();
     }
 
+    public void addContacts(List<Contacto> contactos) {
+        this.contactos = contactos;
+        notifyDataSetChanged();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder{
         @Bind(R.id.nombre)
         TextView nombre;
@@ -60,10 +69,21 @@ public class ListaViewAdapter extends RecyclerView.Adapter<ListaViewAdapter.View
         TextView numero;
         @Bind(R.id.id)
         TextView id;
+        @Bind(R.id.deleteContact)
+        ImageView deleteContact;
 
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+
+        public void setOnItemClickListener(final Contacto contacto, final ListaViewOnItemClickListener listener){
+            deleteContact.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    listener.onDelete(contacto);
+                }
+            });
         }
     }
 }

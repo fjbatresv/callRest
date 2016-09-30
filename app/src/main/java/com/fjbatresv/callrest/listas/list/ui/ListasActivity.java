@@ -83,7 +83,7 @@ public class ListasActivity extends AppCompatActivity implements
     }
 
     private void recycler() {
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
         recyclerView.setAdapter(adapter);
     }
 

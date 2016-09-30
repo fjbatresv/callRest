@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CallRest</string>
+    <string name="app_name">Ring Control</string>
     <string name="title_activity_main">MainActivity</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -26,6 +26,9 @@
     <string name="listas.view.menu.action.edit">Editar lista</string>
     <string name="listas.view.menu.action.add.contact">Agregar contacto nuevo</string>
     <string name="listas.view.menu.action.add.contact.phone">Agregar contacto</string>
+    <string name="listas.add.hint.numero">Número</string>
+    <string name="contact.list.button.add">Agregar %s contactos</string>
+    <string name="general_error_permisos">Todos los permisos son requeridos</string>
     <string-array name="listas_add_tipo">
         <item>Nunca respondo</item>
         <item>Siempre respondo</item>

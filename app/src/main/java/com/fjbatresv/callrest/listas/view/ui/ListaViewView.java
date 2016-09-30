@@ -9,6 +9,6 @@ import com.fjbatresv.callrest.entities.Lista;
 public interface ListaViewView {
     void loading(boolean load);
     void showError(String error);
-    void contacAdded(Contacto contacto);
+    void contacAdded(Lista lista);
     void foundedList(Lista lista);
 }

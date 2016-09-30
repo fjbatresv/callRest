@@ -12,6 +12,7 @@ import com.fjbatresv.callrest.listas.view.ListaViewRepo;
 import com.fjbatresv.callrest.listas.view.ListaViewRepoImpl;
 import com.fjbatresv.callrest.listas.view.ui.ListaViewView;
 import com.fjbatresv.callrest.listas.view.ui.adapters.ListaViewAdapter;
+import com.fjbatresv.callrest.listas.view.ui.adapters.ListaViewOnItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,15 +28,23 @@ import dagger.Provides;
 @Module
 public class ListaViewModule {
     private ListaViewView view;
+    private ListaViewOnItemClickListener listener;
 
-    public ListaViewModule(ListaViewView view) {
+    public ListaViewModule(ListaViewView view, ListaViewOnItemClickListener listener) {
         this.view = view;
+        this.listener = listener;
     }
 
     @Singleton
     @Provides
     ListaViewView providesListaViewView(){
         return this.view;
+    }
+
+    @Singleton
+    @Provides
+    ListaViewOnItemClickListener providesListaViewOnItemClickListener(){
+        return this.listener;
     }
 
     @Singleton
@@ -59,7 +68,7 @@ public class ListaViewModule {
     @Singleton
     @Provides
     ListaViewAdapter providesListaViewAdapter(List<Contacto> contactos){
-        return new ListaViewAdapter(contactos);
+        return new ListaViewAdapter(contactos, listener);
     }
 
     @Singleton

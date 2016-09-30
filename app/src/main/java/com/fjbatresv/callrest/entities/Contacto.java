@@ -62,4 +62,18 @@ public class Contacto extends BaseModel {
     public void setNombreLista(String nombreLista) {
         this.nombreLista = nombreLista;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        boolean respuesta = false;
+        if (o instanceof Contacto){
+            Contacto tmp = (Contacto) o;
+            if (this.nombre.equalsIgnoreCase(tmp.getNombre())
+                    && this.numero.equalsIgnoreCase(tmp.getNumero())
+                    && this.nombreLista.equalsIgnoreCase(tmp.getNombreLista())){
+                respuesta = true;
+            }
+        }
+        return respuesta;
+    }
 }

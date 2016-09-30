@@ -1,7 +1,10 @@
 package com.fjbatresv.callrest.listas.view.ui;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -10,20 +13,25 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fjbatresv.callrest.App;
 import com.fjbatresv.callrest.R;
+import com.fjbatresv.callrest.contactList.ui.ContacListActivity;
 import com.fjbatresv.callrest.entities.Contacto;
 import com.fjbatresv.callrest.entities.Lista;
 import com.fjbatresv.callrest.listas.add.ui.ListaAddActivity;
 import com.fjbatresv.callrest.listas.list.ui.ListasActivity;
 import com.fjbatresv.callrest.listas.view.ListaViewPresenter;
 import com.fjbatresv.callrest.listas.view.ui.adapters.ListaViewAdapter;
+import com.fjbatresv.callrest.listas.view.ui.adapters.ListaViewOnItemClickListener;
 
 import javax.inject.Inject;
 
@@ -33,7 +41,7 @@ import io.github.yavski.fabspeeddial.FabSpeedDial;
 import io.github.yavski.fabspeeddial.SimpleMenuListenerAdapter;
 
 public class ListaViewActivity extends AppCompatActivity implements
-        NavigationView.OnNavigationItemSelectedListener, ListaViewView {
+        NavigationView.OnNavigationItemSelectedListener, ListaViewView, ListaViewOnItemClickListener {
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
@@ -91,6 +99,8 @@ public class ListaViewActivity extends AppCompatActivity implements
     private void load() {
         visible = View.VISIBLE;
         gone = View.GONE;
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
+        recyclerView.setAdapter(adapter);
         context = getApplicationContext();
         recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
         recyclerView.setAdapter(adapter);
@@ -106,7 +116,8 @@ public class ListaViewActivity extends AppCompatActivity implements
                         addContact();
                         break;
                     case R.id.menu_add_contact_phone:
-                        addContactPhone();
+                        startActivity(new Intent(context, ContacListActivity.class)
+                                .putExtra(ContacListActivity.LISTA, lista.getNombre()));
                         break;
                 }
                 return false;
@@ -114,16 +125,31 @@ public class ListaViewActivity extends AppCompatActivity implements
         });
     }
 
-    private void addContactPhone() {
-
-    }
-
     private void addContact() {
-        
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Nuevo contacto");
+        final View view = LayoutInflater.from(this).inflate(R.layout.new_contact, null);
+        builder.setView(view);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                EditText nombre = (EditText) view.findViewById(R.id.txtNombre);
+                EditText numero = (EditText) view.findViewById(R.id.txtNumero);
+                presenter.addContact(lista, new Contacto(null, nombre.getText().toString(),
+                        numero.getText().toString(), lista.getNombre()));
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
     }
 
     private void inject() {
-        app.listaView(this).inject(this);
+        app.listaView(this, this).inject(this);
     }
 
     @Override
@@ -160,8 +186,8 @@ public class ListaViewActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void contacAdded(Contacto contacto) {
-        adapter.addContact(contacto);
+    public void contacAdded(Lista lista) {
+        adapter.addContacts(lista.getContactos());
     }
 
     @Override
@@ -171,5 +197,10 @@ public class ListaViewActivity extends AppCompatActivity implements
         desc.setText(lista.getDescripcion());
         tipo.setText(lista.getTipo());
         adapter.setList(lista.getContactos());
+    }
+
+    @Override
+    public void onDelete(Contacto contacto) {
+        presenter.removeContact(lista, contacto);
     }
 }

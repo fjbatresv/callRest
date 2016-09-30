@@ -1,5 +1,7 @@
 package com.fjbatresv.callrest.listas.view;
 
+import com.fjbatresv.callrest.entities.Contacto;
+import com.fjbatresv.callrest.entities.Lista;
 import com.fjbatresv.callrest.listas.view.events.ListaViewEvent;
 
 /**
@@ -10,4 +12,8 @@ public interface ListaViewPresenter {
     void onDestroy();
     void onEventMainThread(ListaViewEvent event);
     void loadList(String nombre);
+
+    void addContact(Lista lista, Contacto contacto);
+
+    void removeContact(Lista lista, Contacto contacto);
 }

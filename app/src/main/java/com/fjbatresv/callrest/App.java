@@ -2,6 +2,11 @@ package com.fjbatresv.callrest;
 
 import android.app.Application;
 
+import com.fjbatresv.callrest.contactList.DI.ContactListComponent;
+import com.fjbatresv.callrest.contactList.DI.ContactListModule;
+import com.fjbatresv.callrest.contactList.DI.DaggerContactListComponent;
+import com.fjbatresv.callrest.contactList.ui.ContactListView;
+import com.fjbatresv.callrest.contactList.ui.adapters.ContactListOnItemClickListener;
 import com.fjbatresv.callrest.libs.DI.LibsModule;
 import com.fjbatresv.callrest.listas.add.DI.DaggerListaAddComponent;
 import com.fjbatresv.callrest.listas.add.DI.ListaAddComponent;
@@ -16,6 +21,7 @@ import com.fjbatresv.callrest.listas.view.DI.DaggerListaViewComponent;
 import com.fjbatresv.callrest.listas.view.DI.ListaViewComponent;
 import com.fjbatresv.callrest.listas.view.DI.ListaViewModule;
 import com.fjbatresv.callrest.listas.view.ui.ListaViewView;
+import com.fjbatresv.callrest.listas.view.ui.adapters.ListaViewOnItemClickListener;
 import com.raizlabs.android.dbflow.config.FlowManager;
 
 /**
@@ -68,11 +74,19 @@ public class App extends Application {
                 .build();
     }
 
-    public ListaViewComponent listaView(ListaViewView view){
+    public ListaViewComponent listaView(ListaViewView view, ListaViewOnItemClickListener listener){
         return DaggerListaViewComponent.builder()
                 .appModule(appModule)
                 .libsModule(libsModule)
-                .listaViewModule(new ListaViewModule(view))
+                .listaViewModule(new ListaViewModule(view, listener))
+                .build();
+    }
+
+    public ContactListComponent contactList(ContactListView view, ContactListOnItemClickListener listener){
+        return DaggerContactListComponent.builder()
+                .appModule(appModule)
+                .libsModule(libsModule)
+                .contactListModule(new ContactListModule(view, listener))
                 .build();
     }
     //INJECTION -- END
