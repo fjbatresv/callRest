@@ -34,6 +34,8 @@ dependencies {
     compile "com.android.support:cardview-v7:$rootProject.ext.supportLibraryVersion"
     compile "com.android.support:design:$rootProject.ext.supportLibraryVersion"
     compile "com.android.support:support-v4:$rootProject.ext.supportLibraryVersion"
+    //DATE-TIME-PICKER - GITHUB
+    compile 'com.code-troopers.betterpickers:library:3.0.1'
     //Fab Speed Dial - GITHUB
     compile 'io.github.yavski:fab-speed-dial:1.0.4'
     //Inyeccion de dependencias

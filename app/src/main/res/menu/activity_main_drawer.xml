@@ -6,6 +6,16 @@
             android:id="@+id/sidebar_listas"
             android:icon="@drawable/ic_menu_manage"
             android:title="@string/sidebar.listas"/>
+        <item android:title="@string/sidebar.programacion">
+            <menu>
+                <item android:id="@+id/sidebar_horarios"
+                    android:icon="@android:drawable/ic_popup_reminder"
+                    android:title="@string/sidebar.programacion.horario"/>
+                <item android:id="@+id/eventos"
+                    android:icon="@android:drawable/ic_menu_my_calendar"
+                    android:title="@string/sidebar.programacion.event"/>
+            </menu>
+        </item>
     </group>
 
     <item android:title="Communicate">

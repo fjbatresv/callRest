@@ -29,6 +29,9 @@
     <string name="listas.add.hint.numero">Número</string>
     <string name="contact.list.button.add">Agregar %s contactos</string>
     <string name="general_error_permisos">Todos los permisos son requeridos</string>
+    <string name="sidebar.programacion.event">Eventos</string>
+    <string name="sidebar.programacion.horario">Horarios</string>
+    <string name="sidebar.programacion">Programaciones</string>
     <string-array name="listas_add_tipo">
         <item>Nunca respondo</item>
         <item>Siempre respondo</item>
