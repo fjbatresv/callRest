@@ -4,19 +4,26 @@ import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fjbatresv.callrest.App;
 import com.fjbatresv.callrest.R;
+import com.fjbatresv.callrest.about.AboutActivity;
 import com.fjbatresv.callrest.contactList.ContactListPresenter;
 import com.fjbatresv.callrest.contactList.ui.adapters.ContactListAdapter;
 import com.fjbatresv.callrest.contactList.ui.adapters.ContactListOnItemClickListener;
@@ -24,6 +31,8 @@ import com.fjbatresv.callrest.entities.Contacto;
 import com.fjbatresv.callrest.entities.Lista;
 import com.fjbatresv.callrest.listas.list.ui.ListasActivity;
 import com.fjbatresv.callrest.listas.view.ui.ListaViewActivity;
+import com.fjbatresv.callrest.main.MainActivity;
+import com.fjbatresv.callrest.settings.ui.SettingsActivity;
 
 import java.util.List;
 
@@ -38,6 +47,11 @@ public class ContacListActivity extends AppCompatActivity implements
         ContactListOnItemClickListener{
     @Bind(R.id.toolbar)
     Toolbar toolbar;
+    @Bind(R.id.barName)
+    TextView barName;
+
+    @Bind(R.id.txtSearch)
+    EditText txtSearch;
 
     @Bind(R.id.drawer_layout)
     DrawerLayout drawerLayout;
@@ -62,6 +76,8 @@ public class ContacListActivity extends AppCompatActivity implements
     private int visible;
     private int gone;
     private Lista lista;
+    private List<Contacto> contactos;
+    private List<Contacto> selected;
 
     public static final String LISTA = "lista";
 
@@ -71,6 +87,10 @@ public class ContacListActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_contac_list);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.setDrawerListener(toggle);
+        toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
         app = (App) getApplication();
         injection();
@@ -85,16 +105,37 @@ public class ContacListActivity extends AppCompatActivity implements
     private void load() {
         visible = View.VISIBLE;
         gone = View.GONE;
+        barName.setText(getString(R.string.contact_list_title));
         recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
         recyclerView.setAdapter(adapter);
         nombre.setText(getIntent().getStringExtra(LISTA));
         presenter.loadContacts(getIntent().getStringExtra(LISTA));
         addContact.setText(String.format(getString(R.string.contact_list_button_add), 0));
+        txtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!txtSearch.getText().toString().equals("")){
+                    adapter.search(txtSearch.getText().toString());
+                }else{
+                    adapter.restart();
+                }
+            }
+        });
     }
 
     @OnClick(R.id.addContact)
     public void add(){
-        presenter.saveContacts(adapter.getSelected(), getIntent().getStringExtra(LISTA));
+        presenter.saveContacts(selected, getIntent().getStringExtra(LISTA));
     }
 
     @Override
@@ -116,8 +157,17 @@ public class ContacListActivity extends AppCompatActivity implements
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()){
+            case R.id.sidebar_home:
+                startActivity(new Intent(this, MainActivity.class));
+                break;
             case R.id.sidebar_listas:
                 startActivity(new Intent(this, ListasActivity.class));
+                break;
+            case R.id.sidebar_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                break;
+            case R.id.sidebar_about:
+                startActivity(new Intent(this, AboutActivity.class));
                 break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -146,21 +196,22 @@ public class ContacListActivity extends AppCompatActivity implements
 
     @Override
     public void loadContacts(List<Contacto> contactos) {
+        this.contactos = contactos;
         adapter.loadList(contactos);
     }
 
     @Override
     public void addSelected(Contacto contacto) {
-        adapter.addSelected(contacto);
-        int selecteds = adapter.getSelected().size();
+        selected.add(contacto);
+        int selecteds = selected.size();
         addContact.setEnabled(selecteds > 0);
         addContact.setText(String.format(getString(R.string.contact_list_button_add), String.valueOf(selecteds)));
     }
 
     @Override
     public void removeSelected(Contacto contacto) {
-        adapter.removeSelected(contacto);
-        int selecteds = adapter.getSelected().size();
+        selected.remove(contacto);
+        int selecteds = selected.size();
         addContact.setEnabled(selecteds > 0);
         addContact.setText(String.format(getString(R.string.contact_list_button_add), String.valueOf(selecteds)));
     }

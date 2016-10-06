@@ -39,7 +39,7 @@ public class ContactListRepoImpl implements ContactListRepo{
             if ("1".equals(hasPhone) || Boolean.parseBoolean(hasPhone)) {
                 Cursor phones = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, null, null);
                 while (phones.moveToNext()) {
-                    String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                    String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)).replace(" ", "");
                     Contacto contacto = new Contacto(null, name, phoneNumber, nombre);
                     if (!contactos.contains(contacto) && !phone.contains(contacto)){
                         phone.add(contacto);

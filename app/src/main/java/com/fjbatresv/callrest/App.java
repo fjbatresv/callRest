@@ -22,6 +22,10 @@ import com.fjbatresv.callrest.listas.view.DI.ListaViewComponent;
 import com.fjbatresv.callrest.listas.view.DI.ListaViewModule;
 import com.fjbatresv.callrest.listas.view.ui.ListaViewView;
 import com.fjbatresv.callrest.listas.view.ui.adapters.ListaViewOnItemClickListener;
+import com.fjbatresv.callrest.settings.DI.DaggerSettingsComponent;
+import com.fjbatresv.callrest.settings.DI.SettingsComponent;
+import com.fjbatresv.callrest.settings.DI.SettingsModule;
+import com.fjbatresv.callrest.settings.ui.SettingsView;
 import com.raizlabs.android.dbflow.config.FlowManager;
 
 /**
@@ -87,6 +91,14 @@ public class App extends Application {
                 .appModule(appModule)
                 .libsModule(libsModule)
                 .contactListModule(new ContactListModule(view, listener))
+                .build();
+    }
+
+    public SettingsComponent settings(SettingsView view){
+        return DaggerSettingsComponent.builder()
+                .appModule(appModule)
+                .libsModule(libsModule)
+                .settingsModule(new SettingsModule(view))
                 .build();
     }
     //INJECTION -- END

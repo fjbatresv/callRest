@@ -1,21 +1,19 @@
-package com.fjbatresv.callrest.listas.list.ui;
+package com.fjbatresv.callrest.settings.ui;
 
 import android.content.Intent;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,16 +22,9 @@ import com.fjbatresv.callrest.R;
 import com.fjbatresv.callrest.about.AboutActivity;
 import com.fjbatresv.callrest.entities.Lista;
 import com.fjbatresv.callrest.entities.Settings;
-import com.fjbatresv.callrest.listas.add.ui.ListaAddActivity;
-import com.fjbatresv.callrest.listas.list.ListasPresenter;
-import com.fjbatresv.callrest.listas.list.ui.adapters.ListasAdapter;
-import com.fjbatresv.callrest.listas.list.ui.adapters.OnItemClickListener;
-import com.fjbatresv.callrest.listas.view.ui.ListaViewActivity;
-import com.fjbatresv.callrest.listas.view.ui.ListaViewView;
+import com.fjbatresv.callrest.listas.list.ui.ListasActivity;
 import com.fjbatresv.callrest.main.MainActivity;
-import com.fjbatresv.callrest.settings.ui.SettingsActivity;
-
-import java.util.List;
+import com.fjbatresv.callrest.settings.SettingsPresenter;
 
 import javax.inject.Inject;
 
@@ -41,8 +32,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ListasActivity extends AppCompatActivity implements
-        NavigationView.OnNavigationItemSelectedListener, ListasView, OnItemClickListener{
+public class SettingsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, SettingsView {
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.barName)
@@ -51,29 +41,32 @@ public class ListasActivity extends AppCompatActivity implements
     DrawerLayout drawer;
     @Bind(R.id.nav_view)
     NavigationView navigationView;
-    @Bind(R.id.progressBar)
-    ProgressBar progressBar;
-    @Bind(R.id.recyclerView)
-    RecyclerView recyclerView;
-    @Bind(R.id.container)
-    RelativeLayout container;
-    @Bind(R.id.addList)
-    FloatingActionButton addList;
+
+    @Bind(R.id.txtExtension)
+    EditText txtExtension;
+    @Bind(R.id.sms)
+    Switch sms;
+    @Bind(R.id.txtSms)
+    LinearLayout txtSms;
+    @Bind(R.id.txtSmsNoWeekend)
+    EditText txtSmsNoWeekend;
+    @Bind(R.id.txtSmsNoWork)
+    EditText txtSmsNoWork;
+    @Bind(R.id.txtSmsJustWork)
+    EditText txtSmsJustWork;
 
     @Inject
-    ListasPresenter presenter;
-    @Inject
-    ListasAdapter adapter;
+    SettingsPresenter presenter;
 
     private App app;
     private int visible;
     private int gone;
+    private Settings settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.e("listas", "en activity listas");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_listas);
+        setContentView(R.layout.activity_settings);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -82,22 +75,10 @@ public class ListasActivity extends AppCompatActivity implements
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
         app = (App) getApplication();
-        load();
         inject();
-        recycler();
         presenter.onCreate();
-        presenter.getLists();
-    }
-
-    private void load() {
-        visible = View.VISIBLE;
-        gone = View.GONE;
-        barName.setText(getString(R.string.listas_list_title));
-    }
-
-    private void recycler() {
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
-        recyclerView.setAdapter(adapter);
+        load();
+        presenter.load();
     }
 
     @Override
@@ -107,12 +88,13 @@ public class ListasActivity extends AppCompatActivity implements
     }
 
     private void inject() {
-        app.listas(this, this).inject(this);
+        app.settings(this).inject(this);
     }
 
-    @OnClick(R.id.addList)
-    public void addList(){
-        startActivity(new Intent(this, ListaAddActivity.class));
+    private void load() {
+        visible = View.VISIBLE;
+        gone = View.GONE;
+        barName.setText(getString(R.string.settings_title));
     }
 
     @Override
@@ -124,10 +106,19 @@ public class ListasActivity extends AppCompatActivity implements
         }
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
+    @OnClick(R.id.sms)
+    public void sms(){
+        if (sms.isChecked()){
+            txtSms.setVisibility(View.VISIBLE);
+        }else{
+            txtSms.setVisibility(View.GONE);
+        }
+    }
+
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        // Handle navigation view item clicks here
+        switch (item.getItemId()) {
             case R.id.sidebar_home:
                 startActivity(new Intent(this, MainActivity.class));
                 break;
@@ -147,12 +138,25 @@ public class ListasActivity extends AppCompatActivity implements
 
     @Override
     public void loading(boolean load) {
-        if (load){
-            progressBar.setVisibility(visible);
-        }else{
-            progressBar.setVisibility(gone);
-        }
+
     }
+
+    @Override
+    public void loadActual(Settings settings) {
+        this.settings = settings;
+        txtExtension.setText(settings.getExtension());
+        sms.setChecked(settings.getSms());
+        if (sms.isChecked()) {
+            txtSms.setVisibility(visible);
+        } else {
+            txtSms.setVisibility(gone);
+        }
+        txtSmsJustWork.setText(settings.getSmsJustWork());
+        txtSmsNoWeekend.setText(settings.getSmsNoWeekend());
+        txtSmsNoWork.setText(settings.getSmsNoWork());
+    }
+
+
 
     @Override
     public void showError(String error) {
@@ -160,13 +164,36 @@ public class ListasActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void setListas(List<Lista> listas) {
-        adapter.setListas(listas);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.listas_add_appbar, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
-    public void onListaCardClick(Lista lista) {
-        startActivity(new Intent(this, ListaViewActivity.class)
-        .putExtra(ListaViewActivity.LISTA, lista.getNombre()));
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menu_save:
+                save();
+                break;
+        }
+        return true;
+    }
+
+    public void save() {
+        Settings settings = new Settings(
+                1,
+                txtExtension.getText().toString(),
+                sms.isChecked(),
+                txtSmsNoWeekend.getText().toString(),
+                txtSmsNoWork.getText().toString(),
+                txtSmsJustWork.getText().toString()
+        );
+        presenter.save(settings);
+    }
+
+    @Override
+    public void saved() {
+        Toast.makeText(this, getString(R.string.settings_save_success), Toast.LENGTH_LONG).show();
+        startActivity(new Intent(this, MainActivity.class));
     }
 }

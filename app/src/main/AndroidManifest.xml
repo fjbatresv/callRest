@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
 
     <application
         android:name=".App"
@@ -32,7 +33,10 @@
         <activity android:name=".listas.list.ui.ListasActivity" />
         <activity android:name=".listas.add.ui.ListaAddActivity" />
         <activity android:name=".listas.view.ui.ListaViewActivity" />
-        <activity android:name=".contactList.ui.ContacListActivity"></activity>
+        <activity android:name=".contactList.ui.ContacListActivity" />
+        <activity android:name=".eventos.ui.EventosActivity" />
+        <activity android:name=".settings.ui.SettingsActivity" />
+        <activity android:name=".about.AboutActivity"></activity>
     </application>
 
 </manifest>

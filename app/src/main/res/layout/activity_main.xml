@@ -6,10 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:background="@color/colorDivider"
-    tools:openDrawer="start">
+    android:background="@color/colorDivider">
     <include
-        layout="@layout/app_bar_main"
+        layout="@layout/app_bar"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
     <RelativeLayout

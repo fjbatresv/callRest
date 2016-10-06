@@ -22,15 +22,6 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:layout_width="@dimen/avatar_size"
-                    android:layout_height="@dimen/avatar_size"
-                    android:id="@+id/loggedAvatar"
-                    app:civ_border_width="1dp"
-                    app:civ_border_color="@color/colorAccent"
-                    android:src="@mipmap/ic_launcher"
-                    android:layout_gravity="center"
-                    />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -2,6 +2,7 @@ package com.fjbatresv.callrest.contactList.ui.adapters;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.fjbatresv.callrest.R;
 import com.fjbatresv.callrest.entities.Contacto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -22,12 +24,12 @@ import butterknife.ButterKnife;
  */
 public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.ViewHolder> {
     private List<Contacto> contactos;
-    private List<Contacto> selected;
+    private List<Contacto> res = new ArrayList<Contacto>();
+    private boolean busqueda = false;
     private ContactListOnItemClickListener listener;
 
     public ContactListAdapter(List<Contacto> contactos, List<Contacto> selected, ContactListOnItemClickListener listener) {
         this.contactos = contactos;
-        this.selected = selected;
         this.listener = listener;
     }
 
@@ -48,6 +50,17 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         holder.nombre.setText(contacto.getNombre());
         holder.numero.setText(contacto.getNumero());
         holder.setOnItemClickListener(contacto, listener);
+        if (busqueda && !res.contains(contacto)){
+            holder.card_view.setVisibility(View.GONE);
+            ViewGroup.LayoutParams params = holder.card_view.getLayoutParams();
+            params.height = 0;
+            holder.card_view.setLayoutParams(params);
+        }else{
+            holder.card_view.setVisibility(View.VISIBLE);
+            ViewGroup.LayoutParams params = holder.card_view.getLayoutParams();
+            params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            holder.card_view.setLayoutParams(params);
+        }
     }
 
     public void loadList(List<Contacto> contactos){
@@ -55,26 +68,23 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         notifyDataSetChanged();
     }
 
-    public void addSelected(Contacto contacto){
-        this.selected.add(contacto);
-    }
-
-    public void removeSelected(Contacto contacto){
-        int contador = 0;
-        for (Contacto sel : selected){
-            if (sel.getNombre().equalsIgnoreCase(contacto.getNombre()) &&
-                    sel.getNumero().equalsIgnoreCase(contacto.getNumero()) &&
-                    sel.getNombreLista().equalsIgnoreCase(contacto.getNombreLista())){
-                selected.remove(contador);
-                break;
+    public void search(String string) {
+        Log.e("adapter", "buscando...");
+        res.clear();
+        for (Contacto contacto :  this.contactos){
+            if (contacto.getNombre().toUpperCase().contains(string.toUpperCase())
+                    || contacto.getNumero().toUpperCase().contains(string.toUpperCase())){
+                res.add(contacto);
             }
-            contador++;
         }
+        busqueda = true;
+        notifyDataSetChanged();
     }
 
-
-    public List<Contacto> getSelected(){
-        return this.selected;
+    public void restart() {
+        res.clear();
+        busqueda = false;
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

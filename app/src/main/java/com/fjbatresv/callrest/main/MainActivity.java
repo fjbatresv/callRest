@@ -18,7 +18,9 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.fjbatresv.callrest.R;
+import com.fjbatresv.callrest.about.AboutActivity;
 import com.fjbatresv.callrest.listas.list.ui.ListasActivity;
+import com.fjbatresv.callrest.settings.ui.SettingsActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -54,7 +56,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ActivityCompat.checkSelfPermission(this, Manifest.permission.MODIFY_PHONE_STATE) != PackageManager.PERMISSION_GRANTED ||
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED ||
         ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED ||
-        ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_CONTACTS) != PackageManager.PERMISSION_GRANTED){
+        ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_CONTACTS) != PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED){
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 requestPermissions(new String[]{
                         Manifest.permission.CALL_PHONE,
@@ -62,7 +65,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         Manifest.permission.MODIFY_PHONE_STATE,
                         Manifest.permission.INTERNET,
                         Manifest.permission.READ_CONTACTS,
-                        Manifest.permission.WRITE_CONTACTS
+                        Manifest.permission.WRITE_CONTACTS,
+                        Manifest.permission.SEND_SMS
                 }, PERMISSIONS_REQUEST_LOCATION);
             }
             return;
@@ -97,10 +101,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here
         switch (item.getItemId()){
+            case R.id.sidebar_home:
+                startActivity(new Intent(this, MainActivity.class));
+                break;
             case R.id.sidebar_listas:
                 startActivity(new Intent(this, ListasActivity.class));
                 break;
-            case R.id.sidebar_login:
+            case R.id.sidebar_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                break;
+            case R.id.sidebar_about:
+                startActivity(new Intent(this, AboutActivity.class));
                 break;
         }
         //drawer.closeDrawer(GravityCompat.START);
