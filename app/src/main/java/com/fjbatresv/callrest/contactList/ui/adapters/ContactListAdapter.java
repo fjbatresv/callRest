@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.fjbatresv.callrest.R;
@@ -46,10 +47,18 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Contacto contacto = contactos.get(position);
+        final Contacto contacto = contactos.get(position);
         holder.nombre.setText(contacto.getNombre());
         holder.numero.setText(contacto.getNumero());
         holder.setOnItemClickListener(contacto, listener);
+        holder.selected.setOnCheckedChangeListener(null);
+        holder.selected.setChecked(contacto.isSelected());
+        holder.selected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                contacto.setSelected(isChecked);
+            }
+        });
         if (busqueda && !res.contains(contacto)){
             holder.card_view.setVisibility(View.GONE);
             ViewGroup.LayoutParams params = holder.card_view.getLayoutParams();
