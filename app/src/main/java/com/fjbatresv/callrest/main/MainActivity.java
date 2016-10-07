@@ -15,12 +15,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fjbatresv.callrest.R;
 import com.fjbatresv.callrest.about.AboutActivity;
+import com.fjbatresv.callrest.entities.Llamada;
 import com.fjbatresv.callrest.listas.list.ui.ListasActivity;
 import com.fjbatresv.callrest.settings.ui.SettingsActivity;
+import com.raizlabs.android.dbflow.sql.language.Method;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -33,6 +39,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     DrawerLayout drawer;
     @Bind(R.id.nav_view)
     NavigationView navigationView;
+    @Bind(R.id.contador)
+    TextView contador;
 
 
     @Override
@@ -48,6 +56,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
         permisos();
+        load();
+    }
+
+    private void load() {
+        long total = SQLite.select(Method.count()).from(Llamada.class).count();
+        contador.setText(String.valueOf(total));
     }
 
     private void permisos() {

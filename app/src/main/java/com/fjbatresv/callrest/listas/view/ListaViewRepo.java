@@ -12,4 +12,6 @@ public interface ListaViewRepo {
     void addContact(Lista lista, Contacto contacto);
 
     void removeContact(Lista lista, Contacto contacto);
+
+    void delete(String id);
 }

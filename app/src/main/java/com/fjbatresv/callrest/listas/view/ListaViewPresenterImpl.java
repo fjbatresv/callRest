@@ -49,6 +49,9 @@ public class ListaViewPresenterImpl implements ListaViewPresenter {
                 case ListaViewEvent.REMOVE_CONTACT:
                     view.contacAdded(event.getLista());
                     break;
+                case ListaViewEvent.DELETE_LIST:
+                    view.deleted();
+                    break;
             }
         }
     }
@@ -69,5 +72,11 @@ public class ListaViewPresenterImpl implements ListaViewPresenter {
     public void removeContact(Lista lista, Contacto contacto) {
         view.loading(true);
         interactor.removeContact(lista, contacto);
+    }
+
+    @Override
+    public void delete(String id) {
+        view.loading(true);
+        interactor.delete(id);
     }
 }

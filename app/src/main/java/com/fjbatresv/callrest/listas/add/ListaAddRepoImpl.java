@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.Log;
 
 import com.fjbatresv.callrest.R;
+import com.fjbatresv.callrest.entities.Contacto;
+import com.fjbatresv.callrest.entities.Contacto_Table;
 import com.fjbatresv.callrest.entities.Lista;
 import com.fjbatresv.callrest.entities.Lista_Table;
 import com.fjbatresv.callrest.libs.base.EventBus;
@@ -30,12 +32,16 @@ public class ListaAddRepoImpl implements ListaAddRepo {
     @Override
     public void saveLista(Lista lista, boolean nuevo) {
         Lista test = Queries.listaNombre(lista.getNombre());
-        if (nuevo && test != null && test.getNombre() != null && lista.getNombre().equalsIgnoreCase(lista.getNombre())) {
+        if (test != null && ((test.getNombre() != null && nuevo) || (!nuevo && !lista.getId().equals(test.getId())))) {
             bus.post(new ListaAddEvent(ListaAddEvent.ADD_LIST, context.getString(R.string.listas_add_error_repetido)));
         } else {
             Log.e("es nuevo", nuevo ? "si" : "no" + nuevo);
             if (nuevo) {
                 lista.setId(Crypto.getRandomUuid());
+            }else{
+                Lista listaA = SQLite.select().from(Lista.class).where(Lista_Table.id.eq(lista.getId())).querySingle();
+                SQLite.update(Contacto.class).set(Contacto_Table.nombreLista.eq(lista.getNombre()))
+                        .where(Contacto_Table.nombreLista.is(listaA.getNombre())).execute();
             }
             lista.save();
             bus.post(new ListaAddEvent(ListaAddEvent.ADD_LIST, lista));

@@ -4,11 +4,14 @@ import android.content.Context;
 
 import com.fjbatresv.callrest.R;
 import com.fjbatresv.callrest.entities.Contacto;
+import com.fjbatresv.callrest.entities.Contacto_Table;
 import com.fjbatresv.callrest.entities.Lista;
+import com.fjbatresv.callrest.entities.Lista_Table;
 import com.fjbatresv.callrest.libs.base.EventBus;
 import com.fjbatresv.callrest.listas.view.events.ListaViewEvent;
 import com.fjbatresv.callrest.utils.Crypto;
 import com.fjbatresv.callrest.utils.Queries;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,5 +61,13 @@ public class ListaViewRepoImpl implements ListaViewRepo {
         contacto.delete();
         lista.save();
         bus.post(new ListaViewEvent(ListaViewEvent.REMOVE_CONTACT, lista));
+    }
+
+    @Override
+    public void delete(String id) {
+        Lista lista = SQLite.select().from(Lista.class).where(Lista_Table.id.eq(id)).querySingle();
+        SQLite.delete().from(Contacto.class).where(Contacto_Table.nombreLista.eq(lista.getNombre())).execute();
+        lista.delete();
+        bus.post(new ListaViewEvent(ListaViewEvent.DELETE_LIST));
     }
 }

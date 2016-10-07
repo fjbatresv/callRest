@@ -11,4 +11,6 @@ public interface ListaViewView {
     void showError(String error);
     void contacAdded(Lista lista);
     void foundedList(Lista lista);
+
+    void deleted();
 }

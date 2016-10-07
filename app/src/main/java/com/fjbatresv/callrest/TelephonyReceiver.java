@@ -30,6 +30,7 @@ import java.util.List;
  */
 public class TelephonyReceiver extends BroadcastReceiver {
     private Context context;
+    private Settings settings;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -59,66 +60,56 @@ public class TelephonyReceiver extends BroadcastReceiver {
                     String incoming = incomingNumber;
                     Calendar date = Calendar.getInstance();
                     Log.e("sonando", "Llamada de: " + incoming);
-                    Settings settings = SQLite.select().from(Settings.class).where(Settings_Table.id.eq(1)).querySingle();
+                    settings = SQLite.select().from(Settings.class).where(Settings_Table.id.eq(1)).querySingle();
                     List<Contacto> contactos = SQLite.select().from(Contacto.class)
                             .where(Contacto_Table.numero.eq(incoming)).or(Contacto_Table.numero.eq(settings.getExtension() + incoming)).queryList();
                     for (Contacto contacto : contactos) {
+                        Log.e("Contacto", contacto.getNombre());
                         Lista lista = SQLite.select().from(Lista.class)
                                 .where(Lista_Table.nombre.eq(contacto.getNombreLista())).querySingle();
-                        if (
-                                (lista.getTipo().equalsIgnoreCase(context.getResources().getStringArray(R.array.listas_add_tipo)[0])) ||
-                                        (lista.getTipo().equalsIgnoreCase(context.getResources().getStringArray(R.array.listas_add_tipo)[2])
-                                                && date.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY &&
-                                                date.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) ||
-                                        (lista.getTipo().equalsIgnoreCase(context.getResources().getStringArray(R.array.listas_add_tipo)[3])
-                                                && date.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY
-                                                && date.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY
-                                                && date.get(Calendar.DAY_OF_WEEK) == Calendar.THURSDAY
-                                                && date.get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY
-                                                && date.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY
-                                                && date.get(Calendar.HOUR_OF_DAY) >= 8
-                                                && date.get(Calendar.HOUR_OF_DAY) <= 17) ||
-                                        (lista.getTipo().equalsIgnoreCase(context.getResources().getStringArray(R.array.listas_add_tipo)[4])
-                                                && date.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY
-                                                && date.get(Calendar.DAY_OF_WEEK) != Calendar.TUESDAY
-                                                && date.get(Calendar.DAY_OF_WEEK) != Calendar.THURSDAY
-                                                && date.get(Calendar.DAY_OF_WEEK) != Calendar.WEDNESDAY
-                                                && date.get(Calendar.DAY_OF_WEEK) != Calendar.FRIDAY
-                                                && date.get(Calendar.HOUR_OF_DAY) <= 8
-                                                && date.get(Calendar.HOUR_OF_DAY) >= 17)) {
-                            new Llamada(Crypto.getRandomUuid(), incomingNumber, contacto.getNombre(), new Date(), lista.getNombre()).save();
+                        Log.e("Lista", lista.getTipo());
+                        if(lista.getTipo().equalsIgnoreCase(context.getResources().getStringArray(R.array.listas_add_tipo)[0])){
                             endCall();
-                            if (settings.getSms()) {
-                                if ((lista.getTipo().equalsIgnoreCase(context.getResources().getStringArray(R.array.listas_add_tipo)[2])
-                                        && date.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY &&
-                                        date.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY)) {
-                                    sendSms(contacto, settings.getSmsNoWeekend());
-                                }
-                                if (lista.getTipo().equalsIgnoreCase(context.getResources().getStringArray(R.array.listas_add_tipo)[3])
-                                        && date.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY
-                                        && date.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY
-                                        && date.get(Calendar.DAY_OF_WEEK) == Calendar.THURSDAY
-                                        && date.get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY
-                                        && date.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY
-                                        && date.get(Calendar.HOUR_OF_DAY) >= 8
-                                        && date.get(Calendar.HOUR_OF_DAY) <= 17){
-                                    sendSms(contacto, settings.getSmsNoWork());
-                                }
-                                if (lista.getTipo().equalsIgnoreCase(context.getResources().getStringArray(R.array.listas_add_tipo)[4])
-                                        && date.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY
-                                        && date.get(Calendar.DAY_OF_WEEK) != Calendar.TUESDAY
-                                        && date.get(Calendar.DAY_OF_WEEK) != Calendar.THURSDAY
-                                        && date.get(Calendar.DAY_OF_WEEK) != Calendar.WEDNESDAY
-                                        && date.get(Calendar.DAY_OF_WEEK) != Calendar.FRIDAY
-                                        && date.get(Calendar.HOUR_OF_DAY) <= 8
-                                        && date.get(Calendar.HOUR_OF_DAY) >= 17){
-                                    sendSms(contacto, settings.getSmsJustWork());
-                                }
-
-                            }
+                            new Llamada(Crypto.getRandomUuid(), incomingNumber, contacto.getNombre(), new Date(), lista.getNombre()).save();
+                            break;
                         }
-                        //endCall();
-                        break;
+                        if (lista.getTipo().equalsIgnoreCase(context.getResources().getStringArray(R.array.listas_add_tipo)[2])
+                                && (date.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY ||
+                                date.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY)){
+                            endCall();
+                            new Llamada(Crypto.getRandomUuid(), incomingNumber, contacto.getNombre(), new Date(), lista.getNombre()).save();
+                            sendSms(contacto, settings.getSmsNoWeekend());
+                            break;
+                        }
+                        if (lista.getTipo().equalsIgnoreCase(context.getResources().getStringArray(R.array.listas_add_tipo)[3])
+                                && (date.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY
+                                || date.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY
+                                || date.get(Calendar.DAY_OF_WEEK) == Calendar.THURSDAY
+                                || date.get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY
+                                || date.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY)
+                                && date.get(Calendar.HOUR_OF_DAY) >= 8
+                                && date.get(Calendar.HOUR_OF_DAY) <= 17){
+                            endCall();
+                            new Llamada(Crypto.getRandomUuid(), incomingNumber, contacto.getNombre(), new Date(), lista.getNombre()).save();
+                            sendSms(contacto, settings.getSmsNoWork());
+                            break;
+                        }
+                        if (lista.getTipo().equalsIgnoreCase(context.getResources().getStringArray(R.array.listas_add_tipo)[4])
+                                || ((date.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY
+                                || date.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY
+                                || date.get(Calendar.DAY_OF_WEEK) == Calendar.THURSDAY
+                                || date.get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY
+                                || date.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY)
+                                && date.get(Calendar.HOUR_OF_DAY) <= 8
+                                && date.get(Calendar.HOUR_OF_DAY) >= 17)
+                                || date.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY
+                                || date.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY){
+                            Log.e("solo trabajo", "solamente en el tiempo de trabajo");
+                            endCall();
+                            new Llamada(Crypto.getRandomUuid(), incomingNumber, contacto.getNombre(), new Date(), lista.getNombre()).save();
+                            sendSms(contacto, settings.getSmsJustWork());
+                            break;
+                        }
                     }
             }
         }
@@ -142,7 +133,9 @@ public class TelephonyReceiver extends BroadcastReceiver {
     }
 
     private void sendSms(Contacto contacto, String sms) {
-        SmsManager manager = SmsManager.getDefault();
-        manager.sendTextMessage(contacto.getNumero(), null, sms, null, null);
+        if (settings.getSms()){
+            SmsManager manager = SmsManager.getDefault();
+            manager.sendTextMessage(contacto.getNumero(), null, sms, null, null);
+        }
     }
 }

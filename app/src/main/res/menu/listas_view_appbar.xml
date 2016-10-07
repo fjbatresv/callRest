@@ -16,4 +16,9 @@
         android:title="@string/listas.view.menu.action.add.contact"
         android:icon="@android:drawable/ic_input_add"
         android:orderInCategory="100" />
+    <item
+        android:id="@+id/menu_delete"
+        android:title="@string/listas.view.menu.action.delete"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:orderInCategory="100"/>
 </menu>

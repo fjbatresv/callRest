@@ -20,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,6 +69,9 @@ public class ListaViewActivity extends AppCompatActivity implements
 
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
+
+    @Bind(R.id.progressBar)
+    ProgressBar progressbar;
 
     @Inject
     ListaViewPresenter presenter;
@@ -127,13 +131,35 @@ public class ListaViewActivity extends AppCompatActivity implements
                         addContact();
                         break;
                     case R.id.menu_add_contact_phone:
+                        progressbar.setVisibility(visible);
                         startActivity(new Intent(context, ContacListActivity.class)
                                 .putExtra(ContacListActivity.LISTA, lista.getNombre()));
+                        break;
+                    case R.id.menu_delete:
+                        delete();
                         break;
                 }
                 return false;
             }
         });
+    }
+
+    private void delete() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("¿Esta seguro de eliminar la lista?");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                presenter.delete(lista.getId());
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
     }
 
     private void addContact() {
@@ -217,6 +243,11 @@ public class ListaViewActivity extends AppCompatActivity implements
         desc.setText(lista.getDescripcion());
         tipo.setText(lista.getTipo());
         adapter.setList(lista.getContactos());
+    }
+
+    @Override
+    public void deleted() {
+        startActivity(new Intent(this, ListasActivity.class));
     }
 
     @Override

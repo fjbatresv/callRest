@@ -8,6 +8,7 @@ import com.fjbatresv.callrest.entities.Lista;
  */
 public class ListaViewEvent {
     public static final int REMOVE_CONTACT = 2;
+    public static final int DELETE_LIST = 3;
     private int tipo;
     private String error;
     private Contacto contacto;
@@ -17,6 +18,10 @@ public class ListaViewEvent {
     public static final int ADD_CONTACT = 1;
 
     public ListaViewEvent() {
+    }
+
+    public ListaViewEvent(int tipo) {
+        this.tipo = tipo;
     }
 
     public ListaViewEvent(int tipo, String error) {

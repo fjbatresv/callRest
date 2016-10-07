@@ -43,4 +43,9 @@ public class ListaViewInteractorImpl implements ListaViewInteractor {
     public void removeContact(Lista lista, Contacto contacto) {
         repo.removeContact(lista, contacto);
     }
+
+    @Override
+    public void delete(String id) {
+        repo.delete(id);
+    }
 }

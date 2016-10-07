@@ -34,6 +34,7 @@ import com.fjbatresv.callrest.listas.view.ui.ListaViewActivity;
 import com.fjbatresv.callrest.main.MainActivity;
 import com.fjbatresv.callrest.settings.ui.SettingsActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -44,7 +45,7 @@ import butterknife.OnClick;
 
 public class ContacListActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener, ContactListView,
-        ContactListOnItemClickListener{
+        ContactListOnItemClickListener {
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.barName)
@@ -76,8 +77,8 @@ public class ContacListActivity extends AppCompatActivity implements
     private int visible;
     private int gone;
     private Lista lista;
-    private List<Contacto> contactos;
-    private List<Contacto> selected;
+    private List<Contacto> contactos = new ArrayList<Contacto>();
+    private List<Contacto> selected = new ArrayList<Contacto>();
 
     public static final String LISTA = "lista";
 
@@ -124,9 +125,9 @@ public class ContacListActivity extends AppCompatActivity implements
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (!txtSearch.getText().toString().equals("")){
+                if (!txtSearch.getText().toString().equals("")) {
                     adapter.search(txtSearch.getText().toString());
-                }else{
+                } else {
                     adapter.restart();
                 }
             }
@@ -134,7 +135,7 @@ public class ContacListActivity extends AppCompatActivity implements
     }
 
     @OnClick(R.id.addContact)
-    public void add(){
+    public void add() {
         presenter.saveContacts(selected, getIntent().getStringExtra(LISTA));
     }
 
@@ -156,7 +157,7 @@ public class ContacListActivity extends AppCompatActivity implements
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.sidebar_home:
                 startActivity(new Intent(this, MainActivity.class));
                 break;
@@ -176,9 +177,9 @@ public class ContacListActivity extends AppCompatActivity implements
 
     @Override
     public void loading(boolean load) {
-        if (load){
+        if (load) {
 
-        }else {
+        } else {
 
         }
     }

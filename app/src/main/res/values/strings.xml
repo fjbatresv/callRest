@@ -49,6 +49,9 @@
     <string name="listas_list_title">Mis listas</string>
     <string name="contact.list.search.hint">Buscar</string>
     <string name="sidebar.about">Acerca de</string>
+    <string name="listas.view.menu.action.delete">Eliminar lista</string>
+    <string name="general.dashboard.blocked">Se han bloqueado</string>
+    <string name="general.dashboard.llamadas">llamadas</string>
     <string-array name="listas_add_tipo">
         <item>Nunca respondo</item>
         <item>Siempre respondo</item>
