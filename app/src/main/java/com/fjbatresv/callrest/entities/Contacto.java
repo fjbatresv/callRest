@@ -20,6 +20,7 @@ public class Contacto extends BaseModel {
     private String numero;
     @Column
     private String nombreLista;
+    private transient boolean selected;
 
     public Contacto() {
     }
@@ -61,6 +62,14 @@ public class Contacto extends BaseModel {
 
     public void setNombreLista(String nombreLista) {
         this.nombreLista = nombreLista;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 
     @Override
