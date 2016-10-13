@@ -22,7 +22,12 @@
                 <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>
         </receiver>
-
+        <service
+            android:name=".firebase.messaging.Service">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
         <activity android:name=".main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,7 +39,6 @@
         <activity android:name=".listas.add.ui.ListaAddActivity" />
         <activity android:name=".listas.view.ui.ListaViewActivity" />
         <activity android:name=".contactList.ui.ContacListActivity" />
-        <activity android:name=".eventos.ui.EventosActivity" />
         <activity android:name=".settings.ui.SettingsActivity" />
         <activity android:name=".about.AboutActivity"></activity>
     </application>
