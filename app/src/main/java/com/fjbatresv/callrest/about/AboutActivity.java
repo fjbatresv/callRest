@@ -50,7 +50,7 @@ public class AboutActivity extends AppCompatActivity implements
         navigationView.setNavigationItemSelectedListener(this);
         barName.setText(getString(R.string.sidebar_about));
         Element version = new Element();
-        version.setTitle("Versión 1.0 BETA");
+        version.setTitle("Versión 1.0.2-BETA");
         View about = new AboutPage(this)
                 .isRTL(false)
                 .addItem(version)

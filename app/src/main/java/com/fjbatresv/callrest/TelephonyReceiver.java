@@ -61,6 +61,9 @@ public class TelephonyReceiver extends BroadcastReceiver {
                     Calendar date = Calendar.getInstance();
                     Log.e("sonando", "Llamada de: " + incoming);
                     settings = SQLite.select().from(Settings.class).where(Settings_Table.id.eq(1)).querySingle();
+                    if(settings == null){
+                        settings = new Settings(1, "", false, null, null, null);
+                    }
                     List<Contacto> contactos = SQLite.select().from(Contacto.class)
                             .where(Contacto_Table.numero.eq(incoming)).or(Contacto_Table.numero.eq(settings.getExtension() + incoming)).queryList();
                     for (Contacto contacto : contactos) {
