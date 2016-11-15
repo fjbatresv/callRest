@@ -50,12 +50,12 @@ public class AboutActivity extends AppCompatActivity implements
         navigationView.setNavigationItemSelectedListener(this);
         barName.setText(getString(R.string.sidebar_about));
         Element version = new Element();
-        version.setTitle("Versión 1.0.2-BETA");
+        version.setTitle("Versión 1.0");
         View about = new AboutPage(this)
                 .isRTL(false)
                 .addItem(version)
                 .setDescription("En está aplicación podras gestionar listas de llamadas de " +
-                        "distintos tipos, para permitirte responder las llamadas que deseas cuando lo deseas.")
+                        "distintos tipos, para permitirte responder las llamadas que deseas cuando lo deseas. \n En el caso del horario de trabajo se considera de 8 AM a 5 PM.")
                 .addGroup("Contactanos")
                 .addPlayStore("com.fjbatresv.callrest")
                 .addEmail("fjbatresv@gmail.com")

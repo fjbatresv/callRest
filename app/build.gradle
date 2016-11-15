@@ -8,8 +8,8 @@ android {
         applicationId "com.fjbatresv.callrest"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 3
-        versionName "1.0.2-BETA"
+        versionCode 4
+        versionName "1.0"
     }
     buildTypes {
         release {
